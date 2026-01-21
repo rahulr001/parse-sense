@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParseSense - Transform the Web into Structured Data</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-cyan: #06b6d4;
+            --primary-blue: #3b82f6;
+            --primary-purple: #8b5cf6;
+            --primary-pink: #ec4899;
+            --primary-emerald: #10b981;
+            --neutral-50: #f8fafc;
+            --neutral-100: #f1f5f9;
+            --neutral-900: #0f172a;
+            --neutral-800: #1e293b;
+            --neutral-700: #334155;
+            --neutral-600: #475569;
+            --neutral-400: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--neutral-800);
+            background: var(--neutral-50);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        nav.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--neutral-900);
+            text-decoration: none;
+            letter-spacing: -0.025em;
+        }
+
+        .logo-svg {
+            width: 36px;
+            height: 36px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            color: var(--neutral-700);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+            position: relative;
+        }
+
+        .nav-menu a:hover {
+            color: var(--primary-purple);
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-cyan), var(--primary-purple));
+            transition: width 0.3s;
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-pink));
+            color: white !important;
+            padding: 0.65rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+            transition: all 0.3s;
+        }
+
+        .nav-cta::after {
+            display: none;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 80px;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(180deg, #ffffff 0%, var(--neutral-50) 100%);
+        }
+
+        .hero-grid-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(6, 182, 212, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(6, 182, 212, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .hero-gradient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--primary-cyan), transparent);
+            top: -10%;
+            left: -10%;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--primary-purple), transparent);
+            bottom: -10%;
+            right: -10%;
+            animation-delay: 5s;
+        }
+
+        .orb-3 {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, var(--primary-pink), transparent);
+            top: 40%;
+            right: 20%;
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 10;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 4.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            color: var(--neutral-900);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.04em;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple), var(--primary-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 8s ease infinite;
+            background-size: 200% 200%;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero-text p {
+            font-size: 1.35rem;
+            color: var(--neutral-600);
+            margin-bottom: 2.5rem;
+            line-height: 1.7;
+            font-weight: 400;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-pink));
+            color: white;
+            box-shadow: 0 8px 24px rgba(139, 92, 246, 0.35);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(139, 92, 246, 0.45);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--neutral-700);
+            border: 2px solid var(--neutral-200);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary-purple);
+            color: var(--primary-purple);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--neutral-600);
+            font-weight: 500;
+        }
+
+        .hero-visual {
+            position: relative;
+        }
+
+        .code-window {
+            background: var(--neutral-900);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.2);
+            animation: floatWindow 6s ease-in-out infinite;
+        }
+
+        @keyframes floatWindow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .window-header {
+            background: #1e293b;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .window-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background: #ef4444; }
+        .dot-yellow { background: #f59e0b; }
+        .dot-green { background: #10b981; }
+
+        .code-content {
+            padding: 1.5rem;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: #e2e8f0;
+        }
+
+        .code-line {
+            display: block;
+            opacity: 0;
+            animation: typeLine 0.5s forwards;
+        }
+
+        .code-line:nth-child(1) { animation-delay: 0.2s; }
+        .code-line:nth-child(2) { animation-delay: 0.4s; }
+        .code-line:nth-child(3) { animation-delay: 0.6s; }
+        .code-line:nth-child(4) { animation-delay: 0.8s; }
+        .code-line:nth-child(5) { animation-delay: 1s; }
+        .code-line:nth-child(6) { animation-delay: 1.2s; }
+
+        @keyframes typeLine {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .code-bracket { color: var(--primary-cyan); }
+        .code-tag { color: var(--primary-pink); }
+        .code-attr { color: var(--primary-purple); }
+        .code-value { color: var(--primary-emerald); }
+        .code-comment { color: var(--neutral-400); font-style: italic; }
+
+        .floating-card {
+            position: absolute;
+            background: white;
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+            animation: floatCard 4s ease-in-out infinite;
+        }
+
+        @keyframes floatCard {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(2deg); }
+        }
+
+        .card-1 {
+            top: 10%;
+            left: -10%;
+            animation-delay: 0.5s;
+        }
+
+        .card-2 {
+            bottom: 15%;
+            right: -5%;
+            animation-delay: 1.5s;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-1 .card-icon {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+        }
+
+        .card-2 .card-icon {
+            background: linear-gradient(135deg, #fce7f3, #fbcfe8);
+        }
+
+        .card-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--neutral-700);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 8rem 2rem;
+            position: relative;
+            background: white;
+        }
+
+        .section-header {
+            max-width: 800px;
+            margin: 0 auto 5rem;
+            text-align: center;
+        }
+
+        .section-label {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(139, 92, 246, 0.1));
+            color: var(--primary-purple);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            letter-spacing: 0.05em;
+        }
+
+        .section-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--neutral-900);
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            letter-spacing: -0.03em;
+        }
+
+        .section-description {
+            font-size: 1.25rem;
+            color: var(--neutral-600);
+            line-height: 1.7;
+        }
+
+        .features-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--neutral-50);
+            border: 1px solid transparent;
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-cyan), var(--primary-purple), var(--primary-pink));
+            transform: scaleX(0);
+            transition: transform 0.4s;
+        }
+
+        .feature-card:hover {
+            background: white;
+            border-color: rgba(139, 92, 246, 0.2);
+            transform: translateY(-8px);
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.08);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-icon-wrapper {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .feature-icon-wrapper::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 18px;
+            padding: 2px;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .feature-card:hover .feature-icon-wrapper::after {
+            opacity: 1;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--neutral-900);
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .feature-card p {
+            color: var(--neutral-600);
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+
+        /* How it Works */
+        .how-it-works {
+            padding: 8rem 2rem;
+            background: linear-gradient(180deg, var(--neutral-50) 0%, white 100%);
+        }
+
+        .workflow-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .workflow-steps {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 4rem 3rem;
+            margin-top: 4rem;
+        }
+
+        .step-card {
+            position: relative;
+            opacity: 0;
+            animation: slideInStep 0.8s forwards;
+        }
+
+        .step-card:nth-child(1) { animation-delay: 0.1s; }
+        .step-card:nth-child(2) { animation-delay: 0.2s; }
+        .step-card:nth-child(3) { animation-delay: 0.3s; }
+        .step-card:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes slideInStep {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
+            color: white;
+            font-size: 1.75rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 24px rgba(6, 182, 212, 0.3);
+        }
+
+        .step-card h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--neutral-900);
+            margin-bottom: 1rem;
+        }
+
+        .step-card p {
+            color: var(--neutral-600);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        /* Use Cases */
+        .use-cases {
+            padding: 8rem 2rem;
+            background: white;
+        }
+
+        .use-cases-grid {
+            max-width: 1400px;
+            margin: 4rem auto 0;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .use-case-card {
+            background: linear-gradient(135deg, var(--neutral-50), white);
+            border: 1px solid var(--neutral-200);
+            border-radius: 20px;
+            padding: 3rem;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .use-case-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.05), rgba(139, 92, 246, 0.05));
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .use-case-card:hover::before {
+            opacity: 1;
+        }
+
+        .use-case-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-purple);
+        }
+
+        .use-case-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .use-case-card h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--neutral-900);
+            margin-bottom: 1rem;
+        }
+
+        .use-case-card p {
+            color: var(--neutral-600);
+            line-height: 1.8;
+            font-size: 1.05rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .use-case-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            padding: 0.4rem 1rem;
+            background: white;
+            border: 1px solid var(--neutral-200);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--neutral-700);
+            font-weight: 500;
+        }
+
+        /* Coming Soon */
+        .coming-soon {
+            padding: 8rem 2rem;
+            background: var(--neutral-900);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .coming-soon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(6, 182, 212, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(6, 182, 212, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .coming-soon .section-header {
+            position: relative;
+            z-index: 10;
+        }
+
+        .coming-soon .section-label {
+            background: rgba(139, 92, 246, 0.2);
+            color: var(--primary-cyan);
+        }
+
+        .coming-soon .section-title {
+            color: white;
+        }
+
+        .coming-soon .section-description {
+            color: var(--neutral-400);
+        }
+
+        .coming-soon-grid {
+            max-width: 1400px;
+            margin: 4rem auto 0;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .soon-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.4s;
+        }
+
+        .soon-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--primary-cyan);
+            transform: translateY(-8px);
+        }
+
+        .soon-badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-pink));
+            color: white;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        .soon-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .soon-card p {
+            color: var(--neutral-400);
+            line-height: 1.7;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 8rem 2rem;
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-pink));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.1;
+            background-image: 
+                radial-gradient(circle at 20px 20px, white 2px, transparent 0);
+            background-size: 40px 40px;
+        }
+
+        .cta-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .cta-content h2 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .cta-content p {
+            font-size: 1.35rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2.5rem;
+            line-height: 1.7;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .btn-white {
+            background: white;
+            color: var(--primary-purple);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-white:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: white;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--neutral-900);
+            color: white;
+            padding: 5rem 2rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+
+        .footer-brand {
+            max-width: 350px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer-brand p {
+            color: var(--neutral-400);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-section h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-section a {
+            color: var(--neutral-400);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: var(--primary-cyan);
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--neutral-400);
+        }
+
+        .social-links {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .social-links a {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+
+    .social-links a:hover {
+        background: var(--primary-cyan);
+        transform: translateY(-3px);
+    }
+
+    @media (max-width: 1200px) {
+        .hero-content {
+            grid-template-columns: 1fr;
+            text-align: center;
+        }
+        
+        .hero-visual {
+            display: none;
+        }
+        
+        .hero-text h1 {
+            font-size: 3.5rem;
+        }
+        
+        .hero-buttons {
+            justify-content: center;
+        }
+        
+        .features-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .workflow-steps {
+            grid-template-columns: 1fr;
+        }
+        
+        .coming-soon-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .nav-menu {
+            display: none;
+        }
+        
+        .hero-text h1 {
+            font-size: 2.5rem;
+        }
+        
+        .hero-text p {
+            font-size: 1.1rem;
+        }
+        
+        .hero-buttons {
+            flex-direction: column;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+        }
+        
+        .features-grid,
+        .use-cases-grid,
+        .coming-soon-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .footer-content {
+            grid-template-columns: 1fr;
+        }
+        
+        .footer-bottom {
+            flex-direction: column;
+            gap: 1.5rem;
+            text-align: center;
+        }
+    }
+    </style>
+
+    </head>
+<body>
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo-container">
+                <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#06b6d4"/>
+                            <stop offset="50%" style="stop-color:#8b5cf6"/>
+                            <stop offset="100%" style="stop-color:#ec4899"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M 35 30 L 20 50 L 35 70" stroke="url(#logoGrad)" stroke-width="4" fill="none" stroke-linecap="round"/>
+                    <path d="M 46 35 L 54 65" stroke="url(#logoGrad)" stroke-width="4" fill="none" stroke-linecap="round"/>
+                    <path d="M 65 30 L 80 50 L 65 70" stroke="url(#logoGrad)" stroke-width="4" fill="none" stroke-linecap="round"/>
+                </svg>
+                ParseSense
+            </a>
+            <ul class="nav-menu">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how-it-works">How it Works</a></li>
+                <li><a href="#use-cases">Use Cases</a></li>
+                <li><a href="#coming-soon">Roadmap</a></li>
+                <li><a href="https://console.parsesense.com" class="nav-cta">Console →</a></li>
+            </ul>
+        </div>
+    </nav>
+    <section class="hero">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-gradient-orb orb-1"></div>
+    <div class="hero-gradient-orb orb-2"></div>
+    <div class="hero-gradient-orb orb-3"></div>
+
+    <div class="hero-content">
+        <div class="hero-text">
+            <h1>Transform the Web into <span class="gradient-text">Structured Data</span></h1>
+            <p>AI-powered web scraping that intelligently parses, structures, and delivers data exactly where you need it. From URLs to databases in minutes, not days.</p>
+            
+            <div class="hero-buttons">
+                <a href="https://console.parsesense.com" class="btn btn-primary">
+                    Start Scraping Free
+                    <span>→</span>
+                </a>
+                <a href="#how-it-works" class="btn btn-secondary">
+                    See How it Works
+                </a>
+            </div>
+
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-number">10M+</div>
+                    <div class="stat-label">Pages Scraped</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">99.9%</div>
+                    <div class="stat-label">Success Rate</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Integrations</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="code-window">
+                <div class="window-header">
+                    <div class="window-dot dot-red"></div>
+                    <div class="window-dot dot-yellow"></div>
+                    <div class="window-dot dot-green"></div>
+                </div>
+                <div class="code-content">
+                    <span class="code-line"><span class="code-bracket">&lt;</span><span class="code-tag">scrape</span> <span class="code-attr">url</span>=<span class="code-value">"example.com"</span><span class="code-bracket">&gt;</span></span>
+                    <span class="code-line">  <span class="code-bracket">&lt;</span><span class="code-tag">parse</span> <span class="code-attr">schema</span>=<span class="code-value">"auto"</span> <span class="code-bracket">/&gt;</span></span>
+                    <span class="code-line">  <span class="code-bracket">&lt;</span><span class="code-tag">transform</span> <span class="code-attr">ai</span>=<span class="code-value">"enabled"</span> <span class="code-bracket">/&gt;</span></span>
+                    <span class="code-line">  <span class="code-bracket">&lt;</span><span class="code-tag">output</span> <span class="code-attr">to</span>=<span class="code-value">"postgres"</span> <span class="code-bracket">/&gt;</span></span>
+                    <span class="code-line"><span class="code-bracket">&lt;/</span><span class="code-tag">scrape</span><span class="code-bracket">&gt;</span></span>
+                    <span class="code-line"><span class="code-comment">// Structured data, delivered.</span></span>
+                </div>
+            </div>
+
+            <div class="floating-card card-1">
+                <div class="card-icon">🤖</div>
+                <div class="card-title">AI Schema Detection</div>
+            </div>
+
+            <div class="floating-card card-2">
+                <div class="card-icon">⚡</div>
+                <div class="card-title">Real-time Processing</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="features" class="features">
+    <div class="section-header">
+        <div class="section-label">CAPABILITIES</div>
+        <h2 class="section-title">Everything You Need to Scale Web Data</h2>
+        <p class="section-description">From intelligent scraping to seamless delivery, ParseSense handles the entire data pipeline so you can focus on insights, not infrastructure.</p>
+    </div>
+
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon-wrapper" style="background: linear-gradient(135deg, #dbeafe, #bfdbfe);">
+                🕸️
+            </div>
+            <h3>Intelligent Scraping</h3>
+            <p>Scrape single pages or entire sites with automatic child link discovery. Configure one-time runs, scheduled pipelines, or batch processing for thousands of URLs simultaneously.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon-wrapper" style="background: linear-gradient(135deg, #f3e8ff, #e9d5ff);">
+                🧠
+            </div>
+            <h3>AI-Powered Parsing</h3>
+            <p>Automatic schema generation understands your data structure. AI-based field mapping and corrections ensure clean, consistent output every single time.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon-wrapper" style="background: linear-gradient(135deg, #fce7f3, #fbcfe8);">
+                🔄
+            </div>
+            <h3>Universal Integrations</h3>
+            <p>Built-in Airbyte integration connects to 50+ destinations. PostgreSQL, MongoDB, Snowflake, Redshift, BigQuery, Kafka streams, and more.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon-wrapper" style="background: linear-gradient(135deg, #d1fae5, #a7f3d0);">
+                📊
+            </div>
+            <h3>Flexible Exports</h3>
+            <p>Download your structured data in CSV, JSON, Markdown, or push directly to Google Sheets. Perfect for analysis, reporting, or long-term archiving.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon-wrapper" style="background: linear-gradient(135deg, #fed7aa, #fdba74);">
+                🎯
+            </div>
+            <h3>Vector Embeddings</h3>
+            <p>Transform scraped content into vector embeddings with customizable chunking strategies. Push directly to Pinecone, Weaviate, or your vector database of choice.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon-wrapper" style="background: linear-gradient(135deg, #fef3c7, #fde68a);">
+                ⚡
+            </div>
+            <h3>Pipeline Automation</h3>
+            <p>Schedule recurring scrapes with cron-like precision. Monitor performance, set up alerts, and automate your entire data collection workflow.</p>
+        </div>
+    </div>
+</section>
+
+<section id="how-it-works" class="how-it-works">
+    <div class="section-header">
+        <div class="section-label">WORKFLOW</div>
+        <h2 class="section-title">From URL to Insight in Four Steps</h2>
+        <p class="section-description">ParseSense streamlines the entire data collection process, turning complex web scraping into a simple, repeatable workflow.</p>
+    </div>
+
+    <div class="workflow-container">
+        <div class="workflow-steps">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3>Configure Sources</h3>
+                <p>Enter URLs individually or in bulk. Choose whether to scrape just the target page or intelligently follow child links across the entire site. Set depth limits and URL patterns for precise control.</p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3>AI Parsing & Schema</h3>
+                <p>Our AI automatically detects data structure and generates optimal schemas. Smart field mapping identifies patterns, while built-in corrections handle edge cases and ensure data quality.</p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3>Transform & Validate</h3>
+                <p>Review and refine your structured output. Apply custom transformations, validate data quality, and preview results before delivery. Fine-tune field mappings with visual tools.</p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">4</div>
+                <h3>Deliver Anywhere</h3>
+                <p>Send to databases via Airbyte connectors, export as CSV/JSON/Markdown, create embeddings for AI applications, or stream to real-time data pipelines. Your data, your destination.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="use-cases" class="use-cases">
+    <div class="section-header">
+        <div class="section-label">USE CASES</div>
+        <h2 class="section-title">Built for Every Data Challenge</h2>
+        <p class="section-description">From competitive intelligence to ML training data, ParseSense powers data pipelines across industries.</p>
+    </div>
+
+    <div class="use-cases-grid">
+        <div class="use-case-card">
+            <div class="use-case-icon">📈</div>
+            <h3>Market Intelligence</h3>
+            <p>Monitor competitor pricing, product catalogs, and market trends in real-time. Automated daily scrapes keep your business intelligence fresh and actionable.</p>
+            <div class="use-case-tags">
+                <span class="tag">E-commerce</span>
+                <span class="tag">Pricing</span>
+                <span class="tag">Analytics</span>
+            </div>
+        </div>
+
+        <div class="use-case-card">
+            <div class="use-case-icon">🤖</div>
+            <h3>AI Training Data</h3>
+            <p>Collect and structure web content for LLM training, RAG systems, or ML models. Vector embeddings with custom chunking make your data AI-ready instantly.</p>
+            <div class="use-case-tags">
+                <span class="tag">Machine Learning</span>
+                <span class="tag">RAG</span>
+                <span class="tag">Embeddings</span>
+            </div>
+        </div>
+
+        <div class="use-case-card">
+            <div class="use-case-icon">🔍</div>
+            <h3>Research & Aggregation</h3>
+            <p>Gather data from academic papers, news sites, or public records. Structured export formats integrate seamlessly with your research workflow.</p>
+            <div class="use-case-tags">
+                <span class="tag">Academic</span>
+                <span class="tag">News</span>
+                <span class="tag">Public Data</span>
+            </div>
+        </div>
+
+        <div class="use-case-card">
+            <div class="use-case-icon">🏢</div>
+            <h3>Data Warehousing</h3>
+            <p>Populate your data warehouse with structured web data. Direct Airbyte integration means web data flows into Snowflake, BigQuery, or Redshift automatically.</p>
+            <div class="use-case-tags">
+                <span class="tag">ETL</span>
+                <span class="tag">Data Lakes</span>
+                <span class="tag">BI Tools</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="coming-soon" class="coming-soon">
+    <div class="section-header">
+        <div class="section-label">COMING SOON</div>
+        <h2 class="section-title">What's Next for ParseSense</h2>
+        <p class="section-description">We're constantly expanding our capabilities. Here's what's in development.</p>
+    </div>
+
+    <div class="coming-soon-grid">
+        <div class="soon-card">
+            <div class="soon-badge">Q1 2026</div>
+            <h3>Advanced Chunking Strategies</h3>
+            <p>Multiple chunking algorithms for embeddings: semantic, sliding window, hierarchical, and custom token-based strategies for optimal vector search performance.</p>
+        </div>
+
+        <div class="soon-card">
+            <div class="soon-badge">Q1 2026</div>
+            <h3>Multi-Model Embeddings</h3>
+            <p>Choose from OpenAI, Cohere, or open-source models. Compare embedding quality and optimize for your specific use case and budget.</p>
+        </div>
+
+        <div class="soon-card">
+            <div class="soon-badge">Q2 2026</div>
+            <h3>Distributed Workers</h3>
+            <p>Horizontal scaling with distributed worker pools. Process thousands of pages simultaneously with auto-scaling based on workload.</p>
+        </div>
+
+        <div class="soon-card">
+            <div class="soon-badge">Q2 2026</div>
+            <h3>JavaScript Rendering</h3>
+            <p>Full browser automation for SPAs and JavaScript-heavy sites. Capture dynamic content that traditional scrapers miss.</p>
+        </div>
+
+        <div class="soon-card">
+            <div class="soon-badge">Q2 2026</div>
+            <h3>Custom Transformations</h3>
+            <p>Write custom Python or JavaScript transformations. Apply complex business logic, data enrichment, and validation rules inline.</p>
+        </div>
+
+        <div class="soon-card">
+            <div class="soon-badge">Q3 2026</div>
+            <h3>Enterprise SSO & RBAC</h3>
+            <p>Single sign-on with Okta, Azure AD, and Google Workspace. Granular role-based access control for team collaboration.</p>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div class="cta-pattern"></div>
+    <div class="cta-content">
+        <h2>Ready to Transform Your Data Pipeline?</h2>
+        <p>Join teams using ParseSense to automate web data collection and focus on what matters: insights and growth.</p>
+        <div class="cta-buttons">
+            <a href="https://console.parsesense.com" class="btn btn-white">
+                Start Free Today →
+            </a>
+            <a href="mailto:sales@arithemiq.com" class="btn btn-outline">
+                Talk to Sales
+            </a>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-content">
+        <div class="footer-brand">
+            <div class="footer-logo">
+                <svg width="32" height="32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="footerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#06b6d4"/>
+                            <stop offset="100%" style="stop-color:#8b5cf6"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M 35 30 L 20 50 L 35 70 M 46 35 L 54 65 M 65 30 L 80 50 L 65 70" stroke="url(#footerGrad)" stroke-width="4" fill="none" stroke-linecap="round"/>
+                </svg>
+                ParseSense
+            </div>
+            <p>Intelligent web scraping and data transformation platform by Arithemiq. Transform any website into structured, AI-ready data.</p>
+        </div>
+
+        <div class="footer-section">
+            <h4>Product</h4>
+            <ul>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how-it-works">How it Works</a></li>
+                <li><a href="#use-cases">Use Cases</a></li>
+                <li><a href="https://console.parsesense.com">Console</a></li>
+                <li><a href="https://docs.parsesense.com">Documentation</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section">
+            <h4>Company</h4>
+            <ul>
+                <li><a href="https://arithemiq.com">About Arithemiq</a></li>
+                <li><a href="mailto:contact@arithemiq.com">Contact Us</a></li>
+                <li><a href="/careers">Careers</a></li>
+                <li><a href="/blog">Blog</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section">
+            <h4>Legal</h4>
+            <ul>
+                <li><a href="/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/terms-of-service">Terms of Service</a></li>
+                <li><a href="/trademark">Trademark</a></li>
+                <li><a href="/gdpr">GDPR Compliance</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2026 Arithemiq. ParseSense™ is a trademark of Arithemiq. All rights reserved.</p>
+        <div class="social-links">
+            <a href="#" aria-label="Twitter">𝕏</a>
+            <a href="#" aria-label="LinkedIn">in</a>
+            <a href="#" aria-label="GitHub">⌘</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    const navbar = document.getElementById('navbar');
+    
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.feature-card, .use-case-card, .soon-card').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+        observer.observe(el);
+    });
+</script>
+
+</body>
+</html>
