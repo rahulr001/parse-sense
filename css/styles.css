@@ -191,7 +191,7 @@ nav.scrolled {
   font-size: 0.95rem;
   transition: color var(--transition-base);
   position: relative;
-  padding: 0.5rem 0;
+  padding: 0.5rem;
 }
 
 .nav-menu a:hover {
@@ -1176,9 +1176,10 @@ section {
 
 /* Footer */
 footer {
-  background: var(--neutral-900);
-  color: white;
+  background: var(--accent-base);
+  color: var(--neutral-800);
   padding: 5rem 2rem 2rem;
+  border-top: 1px solid var(--neutral-100);
 }
 
 .footer-content {
@@ -1204,7 +1205,7 @@ footer {
 }
 
 .footer-brand p {
-  color: var(--neutral-400);
+  color: var(--neutral-600);
   line-height: 1.8;
   margin-bottom: 1.5rem;
 }
@@ -1213,7 +1214,7 @@ footer {
   font-size: 1.1rem;
   font-weight: 700;
   margin-bottom: 1.5rem;
-  color: white;
+  color: var(--neutral-900);
 }
 
 .footer-section ul {
@@ -1225,24 +1226,24 @@ footer {
 }
 
 .footer-section a {
-  color: var(--neutral-400);
+  color: var(--neutral-600);
   text-decoration: none;
   transition: color var(--transition-base);
 }
 
 .footer-section a:hover {
-  color: var(--accent-mint);
+  color: var(--primary);
 }
 
 .footer-bottom {
   max-width: 1400px;
   margin: 0 auto;
   padding-top: 2rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--neutral-200);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: var(--neutral-400);
+  color: var(--neutral-600);
 }
 
 .social-links {
@@ -1254,17 +1255,18 @@ footer {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--neutral-200);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: var(--neutral-800);
   text-decoration: none;
   transition: all var(--transition-base);
 }
 
 .social-links a:hover {
-  background: var(--accent-mint);
+  background: var(--primary);
+  color: white;
   transform: translateY(-3px);
 }
 

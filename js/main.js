@@ -55,7 +55,7 @@ const observer = new IntersectionObserver((entries) => {
 
 // Observe elements for animation
 const animateElements = document.querySelectorAll(
-  ".feature-card, .use-case-card, .soon-card, .slide-up"
+  ".feature-card, .use-case-card, .soon-card, .slide-up",
 );
 animateElements.forEach((el) => {
   el.style.opacity = "0";
@@ -94,16 +94,64 @@ function setActiveNav() {
 // Call on page load
 document.addEventListener("DOMContentLoaded", setActiveNav);
 
-// Mobile menu toggle (for future implementation)
-const mobileMenuToggle = document.querySelector(".mobile-menu-toggle");
-const navMenu = document.querySelector(".nav-menu");
+// Mobile menu toggle
+document.addEventListener("DOMContentLoaded", () => {
+  const initMobileMenu = () => {
+    const mobileMenuToggle = document.querySelector(".mobile-menu-toggle");
+    const navMenu = document.querySelector(".nav-menu");
 
-if (mobileMenuToggle && navMenu) {
-  mobileMenuToggle.addEventListener("click", () => {
-    navMenu.classList.toggle("active");
-    mobileMenuToggle.classList.toggle("active");
+    if (mobileMenuToggle && navMenu) {
+      mobileMenuToggle.addEventListener("click", () => {
+        navMenu.classList.toggle("active");
+        mobileMenuToggle.classList.toggle("active");
+
+        // Toggle body scroll
+        if (navMenu.classList.contains("active")) {
+          document.body.style.overflow = "hidden";
+        } else {
+          document.body.style.overflow = "";
+        }
+      });
+
+      // Close menu when clicking a link
+      navMenu.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", () => {
+          navMenu.classList.remove("active");
+          mobileMenuToggle.classList.remove("active");
+          document.body.style.overflow = "";
+        });
+      });
+    }
+  };
+
+  // Run initialization
+  initMobileMenu();
+
+  // Also watch for DOM changes in case nav is replaced/re-injected
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.addedNodes.length) {
+        // If nav-placeholder was filled, re-init
+        if (
+          document.querySelector(".mobile-menu-toggle") &&
+          !document
+            .querySelector(".mobile-menu-toggle")
+            .hasAttribute("data-listener-attached")
+        ) {
+          initMobileMenu();
+          document
+            .querySelector(".mobile-menu-toggle")
+            .setAttribute("data-listener-attached", "true");
+        }
+      }
+    });
   });
-}
+
+  const navPlaceholder = document.getElementById("nav-placeholder");
+  if (navPlaceholder) {
+    observer.observe(navPlaceholder, { childList: true });
+  }
+});
 
 // Debounce utility for performance
 function debounce(func, wait) {
@@ -163,7 +211,7 @@ if (window.innerWidth > 768) {
 
         orb.style.transform = `translate(${x}px, ${y}px)`;
       });
-    }, 50)
+    }, 50),
   );
 }
 
