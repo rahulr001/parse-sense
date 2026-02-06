@@ -1110,6 +1110,15 @@ footer {
     padding: 0 1.5rem;
   }
 
+  /* Center Feature Cards on Mobile */
+  .feature-card {
+    text-align: center;
+  }
+
+  .feature-icon-wrapper {
+    margin: 0 auto 1.5rem;
+  }
+
   /* Container padding adjustment */
   .container {
     padding: 0 1.5rem;
@@ -1210,7 +1219,8 @@ footer {
   }
 
   /* Pricing specific adjustments */
-  .pricing-card {
+  .pricing-card,
+  .feature-card {
     padding: 1.5rem 1rem !important;
   }
 
@@ -1231,6 +1241,11 @@ footer {
   /* Contact page layout tightening */
   .contact-section .hero-content {
     gap: 2rem !important;
+  }
+
+  /* Section header padding adjustment */
+  .section-header {
+    padding-top: 2rem;
   }
 
   /* Global overflow prevention */
@@ -1515,7 +1530,7 @@ select:focus {
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 2rem;
 }
 
