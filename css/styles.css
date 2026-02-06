@@ -1076,6 +1076,29 @@ footer {
     gap: 1.5rem;
     text-align: center;
   }
+
+  /* Pricing grid stacking */
+  .pricing-grid {
+    grid-template-columns: 1fr !important;
+    padding: 0 1.5rem;
+  }
+
+  /* Values grid stacking */
+  .values-grid {
+    grid-template-columns: 1fr;
+    padding: 0 1.5rem;
+  }
+
+  /* Container padding adjustment */
+  .container {
+    padding: 0 1.5rem;
+  }
+
+  /* Contact page grid fix */
+  .contact-section .hero-content {
+    grid-template-columns: 1fr !important;
+    gap: 3rem !important;
+  }
 }
 
 @media (max-width: 640px) {
@@ -1092,6 +1115,52 @@ footer {
   .coming-soon-grid,
   .workflow-steps {
     grid-template-columns: 1fr;
+  }
+
+  /* Pricing card padding */
+  .pricing-card {
+    padding: 2rem 1.5rem;
+  }
+
+  /* Ensure all grids are single column */
+  .pricing-grid,
+  .values-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Hero section adjustments */
+  .hero h1 {
+    font-size: 2rem;
+    line-height: 1.2;
+  }
+
+  /* Reduce section padding on very small screens */
+  section {
+    padding: var(--spacing-xl) 1rem;
+  }
+
+  /* Tighter spacing for cards */
+  .pricing-card,
+  .value-card {
+    padding: 1.5rem 1rem;
+  }
+
+  /* Adjust stats display */
+  .hero-stats {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  /* Smaller text for mobile */
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .section-description {
+    font-size: 1rem;
   }
 }
 
