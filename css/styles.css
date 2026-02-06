@@ -263,7 +263,7 @@ nav {
 
 .btn:active {
   box-shadow: var(--shadow-neu-inset);
-  transform: scale(0.98);
+  transform: none;
 }
 
 .btn-primary {
