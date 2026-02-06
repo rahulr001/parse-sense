@@ -21,11 +21,9 @@
     <div id="nav-placeholder"></div>
 
     <!-- Contact Section -->
-    <section class="contact-section" style="padding-top: 160px">
-      <div
-        class="hero-content"
-        style="grid-template-columns: 1fr 1fr; gap: 6rem"
-      >
+    <!-- Contact Section -->
+    <section class="contact-section">
+      <div class="container contact-grid">
         <div class="hero-text">
           <div class="section-label">GET IN TOUCH</div>
           <h1 class="section-title">How Can We Help?</h1>
@@ -34,169 +32,61 @@
             custom enterprise solution, our team is ready to assist you.
           </p>
 
-          <div style="margin-top: 3rem">
-            <div
-              style="
-                margin-bottom: 2rem;
-                display: flex;
-                align-items: flex-start;
-                gap: 1.5rem;
-              "
-            >
-              <div
-                class="logo-icon"
-                style="
-                  background: var(--neutral-100);
-                  color: var(--primary);
-                  border-radius: 12px;
-                  width: 44px;
-                  height: 44px;
-                "
-              >
-                📧
-              </div>
-              <div>
-                <h4 style="margin-bottom: 0.25rem">Email Us</h4>
-                <p style="color: var(--neutral-500)">support@parsesense.com</p>
-                <p style="color: var(--neutral-500)">sales@arithemiq.com</p>
+          <div class="contact-methods">
+            <div class="contact-method">
+              <div class="contact-icon">📧</div>
+              <div class="contact-details">
+                <h4>Email Us</h4>
+                <p>support@parsesense.com</p>
+                <p>sales@arithemiq.com</p>
               </div>
             </div>
-            <div
-              style="
-                margin-bottom: 2rem;
-                display: flex;
-                align-items: flex-start;
-                gap: 1.5rem;
-              "
-            >
-              <div
-                class="logo-icon"
-                style="
-                  background: var(--neutral-100);
-                  color: var(--accent-mint);
-                  border-radius: 12px;
-                  width: 44px;
-                  height: 44px;
-                "
-              >
-                💬
-              </div>
-              <div>
-                <h4 style="margin-bottom: 0.25rem">Live Chat</h4>
-                <p style="color: var(--neutral-500)">
-                  Available Mon-Fri, 9am - 6pm EST
-                </p>
+
+            <div class="contact-method">
+              <div class="contact-icon">💬</div>
+              <div class="contact-details">
+                <h4>Live Chat</h4>
+                <p>Available Mon-Fri, 9am - 6pm EST</p>
               </div>
             </div>
           </div>
         </div>
 
         <div class="contact-form-container">
-          <form
-            class="feature-card"
-            style="
-              padding: 3rem;
-              background: white;
-              border-radius: var(--radius-xl);
-              box-shadow: var(--shadow-xl);
-            "
-          >
-            <div style="margin-bottom: 1.5rem">
-              <label
-                style="
-                  display: block;
-                  margin-bottom: 0.5rem;
-                  font-weight: 600;
-                  font-size: 0.9rem;
-                "
-                >Full Name</label
-              >
-              <input
-                type="text"
-                placeholder="John Doe"
-                style="
-                  width: 100%;
-                  padding: 1rem;
-                  border-radius: var(--radius-md);
-                  border: 1px solid var(--neutral-200);
-                  background: var(--neutral-50);
-                  font-family: inherit;
-                "
-              />
+          <form class="contact-form">
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" class="form-input" placeholder="John Doe" />
             </div>
-            <div style="margin-bottom: 1.5rem">
-              <label
-                style="
-                  display: block;
-                  margin-bottom: 0.5rem;
-                  font-weight: 600;
-                  font-size: 0.9rem;
-                "
-                >Work Email</label
-              >
+
+            <div class="form-group">
+              <label>Work Email</label>
               <input
                 type="email"
+                class="form-input"
                 placeholder="john@company.com"
-                style="
-                  width: 100%;
-                  padding: 1rem;
-                  border-radius: var(--radius-md);
-                  border: 1px solid var(--neutral-200);
-                  background: var(--neutral-50);
-                  font-family: inherit;
-                "
               />
             </div>
-            <div style="margin-bottom: 1.5rem">
-              <label
-                style="
-                  display: block;
-                  margin-bottom: 0.5rem;
-                  font-weight: 600;
-                  font-size: 0.9rem;
-                "
-                >Subject</label
-              >
-              <select
-                style="
-                  width: 100%;
-                  padding: 1rem;
-                  border-radius: var(--radius-md);
-                  border: 1px solid var(--neutral-200);
-                  background: var(--neutral-50);
-                  font-family: inherit;
-                "
-              >
+
+            <div class="form-group">
+              <label>Subject</label>
+              <select class="form-select">
                 <option>General Inquiry</option>
                 <option>Sales & Enterprise</option>
                 <option>Technical Support</option>
                 <option>Partnership</option>
               </select>
             </div>
-            <div style="margin-bottom: 2rem">
-              <label
-                style="
-                  display: block;
-                  margin-bottom: 0.5rem;
-                  font-weight: 600;
-                  font-size: 0.9rem;
-                "
-                >Message</label
-              >
+
+            <div class="form-group">
+              <label>Message</label>
               <textarea
+                class="form-textarea"
                 placeholder="Tell us more about your project..."
                 rows="4"
-                style="
-                  width: 100%;
-                  padding: 1rem;
-                  border-radius: var(--radius-md);
-                  border: 1px solid var(--neutral-200);
-                  background: var(--neutral-50);
-                  font-family: inherit;
-                  resize: none;
-                "
               ></textarea>
             </div>
+
             <button
               type="button"
               class="btn btn-primary"

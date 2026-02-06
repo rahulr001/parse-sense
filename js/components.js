@@ -6,7 +6,7 @@ const navigationHTML = `
     <div class="nav-container">
         <a href="index.html" class="logo-container">
             <div class="logo-icon">
-                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <svg viewBox="0 0 100 100" xmlns="">
                     <defs>
                         <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                             <stop offset="0%" style="stop-color:var(--accent-mint)"/>
@@ -45,7 +45,7 @@ const footerHTML = `
     <div class="footer-content">
         <div class="footer-brand">
             <div class="footer-logo">
-                <svg width="32" height="32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <svg width="32" height="32" viewBox="0 0 100 100" xmlns="">
                     <path d="M 35 30 L 20 50 L 35 70 M 46 35 L 54 65 M 65 30 L 80 50 L 65 70" stroke="url(#logoGrad)" stroke-width="8" fill="none" stroke-linecap="round"/>
                 </svg>
                 <span>ParseSense</span>
@@ -73,9 +73,8 @@ const footerHTML = `
             <h4>Company</h4>
             <ul>
                 <li><a href="about.html">About Us</a></li>
-                <li><a href="blog.html">Blog</a></li>
-                <li><a href="contact.html">Contact</a></li>
-                <li><a href="/careers">Careers</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="/careers">Careers</a></li>
             </ul>
         </div>
 
